@@ -1,4 +1,4 @@
-using {ECPersonalInformation} from './external/ECPersonalInformation.csn';
+using {PerPersonal} from '../db/data-model';
 
 service PersonalService {
 
@@ -41,25 +41,25 @@ service PersonalService {
         AggregatableProperty : 'NumberOfPersons',
         ![@Common.Label]     : 'Number of Persons',
     }]
-    entity PerPersonal as projection on ECPersonalInformation.PerPersonal {
+    entity Personal as projection on PerPersonal {
             @Analytics.Dimension
-        key personIdExternal as PersonalId,
+        key PersonalId,
             @Analytics.Dimension
-            firstName        as FirstName,
+            FirstName,
             @Analytics.Dimension
-            lastName         as LastName,
+            LastName,
             @Analytics.Dimension
-            initials         as Initials,
+            Initials,
             @Analytics.Dimension
-            title            as PersonalTitle,
+            PersonalTitle,
             @Analytics.Dimension
-            gender           as Gender,
+            Gender,
             @Analytics.Dimension
-            maritalStatus    as MaritalStatus,
+            MaritalStatus,
             @Analytics.Dimension
-            nationality      as Nationality,
+            Nationality,
             @Analytics.Measure
-            null             as NumberOfPersons : Integer @(title : 'Number of Persons')
+            NumberOfPersons
     }
 
 }
