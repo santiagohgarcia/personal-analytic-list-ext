@@ -8,11 +8,11 @@
     <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Communication.xml">
         <edmx:Include Namespace="com.sap.vocabularies.Communication.v1" Alias="Communication"/>
     </edmx:Reference>
-    <edmx:Reference Uri="/v2/personal/$metadata">
+    <edmx:Reference Uri="/personal/$metadata">
         <edmx:Include Namespace="PersonalService"/>
     </edmx:Reference>
     <edmx:DataServices>
-        <Schema xmlns="http://docs.oasis-open.org/odata/ns/edm" Namespace="sfsf.external">
+        <Schema xmlns="http://docs.oasis-open.org/odata/ns/edm" Namespace="local">
         </Schema>
     </edmx:DataServices>
 </edmx:Edmx>

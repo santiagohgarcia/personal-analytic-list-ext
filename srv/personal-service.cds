@@ -1,8 +1,12 @@
-using {PerPersonal} from '../db/data-model';
+using {ECPersonalInformation} from './external/ECPersonalInformation.csn';
 
 service PersonalService {
 
     @readonly
+    @cds.persistence : {
+        table,
+        skip: false
+    }
     @Aggregation.ApplySupported.PropertyRestrictions   : true
     @Aggregation.ApplySupported.Transformations        : [
         'aggregate',
@@ -20,7 +24,6 @@ service PersonalService {
         'sum'
     ]
     @Aggregation.ApplySupported.GroupableProperties    : [
-        PersonalId,
         FirstName,
         LastName,
         Gender,
@@ -41,25 +44,25 @@ service PersonalService {
         AggregatableProperty : 'NumberOfPersons',
         ![@Common.Label]     : 'Number of Persons',
     }]
-    entity Personal as projection on PerPersonal {
+    entity PerPersonal as select from ECPersonalInformation.PerPersonal {
             @Analytics.Dimension
-        key PersonalId,
+        key personIdExternal as PersonalId,
             @Analytics.Dimension
-            FirstName,
+            firstName as FirstName,
             @Analytics.Dimension
-            LastName,
+            lastName as LastName,
             @Analytics.Dimension
-            Initials,
+            initials as Initials,
             @Analytics.Dimension
-            PersonalTitle,
+            title as PersonalTitle,
             @Analytics.Dimension
-            Gender,
+            gender as Gender,
             @Analytics.Dimension
-            MaritalStatus,
+            maritalStatus as MaritalStatus,
             @Analytics.Dimension
-            Nationality,
+            nationality as Nationality,
             @Analytics.Measure
-            NumberOfPersons
+            1 as NumberOfPersons : Integer
     }
 
 }

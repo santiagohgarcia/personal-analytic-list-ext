@@ -10,90 +10,76 @@ module.exports = async (srv) => {
 
     const ECPersonalInformation = await cds.connect.to('ECPersonalInformation')
 
-    //const sqliteDB = await cds.connect.to('db');
-
     srv.on(['READ'], PerPersonal, async (req) => {
         try {
             const tx = ECPersonalInformation.tx(req);
             const query = req.query.SELECT;
-            const from = query.from;
-            const groupBy = query.groupBy || [];
-            const columns = query.columns || [];
-            const orderBy = query.orderBy || [];
-            const where = query.where || [];
+            let groupByFields = [];
 
+            //OData v2 total query
+            const v2TotalQuery = SELECT
+                .from(query.from)
+                .columns({
+                    func: "count",
+                    args: [
+                        {
+                            val: "1",
+                        },
+                    ],
+                    as: "$count",
+                });
+            const totalCountResult = await tx.run(v2TotalQuery);
+            const totalCount = totalCountResult[0] ? totalCountResult[0].$count : 0;
 
-            //Query only with supported OData v2 features
-            const v2Query = SELECT
-                .from(from)
-                .columns(columns)
-                .orderBy(orderBy)
-                //.limit(5000)
-                .where(where);
+            //Query only with supported OData v2 features, in paginated mode to improve performance
+            const v2Queries = [];
+            const pageSize = 1000;
+            let offset = 0;
 
-            //Execute query in OData v2
-            const results = await tx.run(v2Query);
-
-            //Complete Computed fields
-            results.forEach(item => item.__AGGREGATION__NumberOfPersons = 1);
-
-            //Aggregate results if needed
-            const selectedColumns = groupBy.concat(columns.filter(c => !c.func)).map(c => c.ref[0]);
-            const groupByCols = Array.from(new Set(selectedColumns));
-            const aggregatedCols = query.columns.filter(c => c.func).map(c => c.as);
-
-            let aggregatedResults = [];
-
-            if (groupByCols.length > 0) {
-
-                //Reduce (aggregate) results
-                aggregatedResults = results.reduce((aggrItems, currentItem) => {
-                    //Generate Object with Keys
-                    const currentItemKeyObject = groupByCols.reduce((keyObject, col) => {
-                        keyObject[col] = currentItem[col]
-                        return keyObject;
-                    }, {});
-                    //Generate String Key to easy access object
-                    const currentItemKey = JSON.stringify(currentItemKeyObject);
-                    //Use key to find existing object in Aggregated list
-                    const existingItem = aggrItems.find(aggrItem => aggrItem._key === currentItemKey);
-
-                    //If item exists, summarize
-                    if (existingItem) {
-                        aggregatedCols.forEach(aggrCol => {
-                            //SUM
-                            existingItem[aggrCol] = existingItem[aggrCol] + currentItem[aggrCol];
-                        })
-                    } else { //If item does not exist, set new item
-                        let newItem = {};
-                        newItem._key = currentItemKey;
-                        //Add groupBy/aggregated cols to item
-                        aggregatedCols.concat(groupByCols).forEach(aggrCol => {
-                            newItem[aggrCol] = currentItem[aggrCol];
-                        });
-                        aggrItems.push(newItem);
-                    }
-
-                    return aggrItems;
-                }, []);
-
-            } else {
-                aggregatedResults = results;
+            while (offset <= totalCount) {
+                v2Queries.push(
+                    tx.run(SELECT
+                        .from(query.from)
+                        .limit(pageSize, offset)
+                        .where(query.where || []))
+                );
+                offset = offset + pageSize;
             }
 
-            //Limit according to $top and $skip
-            if (query.limit) {
-                const top = query.limit.rows.val;
-                const skip = query.limit.offset.val;
-                aggregatedResults = aggregatedResults.slice(skip, skip + top);
+            //Execute query in OData v2 External Service
+            const queriesResults = await Promise.all(v2Queries);
+            const results = queriesResults.flat();
+
+            results.forEach(item => item.NumberOfPersons = 1);
+
+            //Insert records into SQLLITE to execute query using framework
+            await DELETE.from(PerPersonal);
+            await INSERT.into(PerPersonal).entries(results);
+
+            //TODO: groupby was not working completely, so we do it like this for now
+            if (query.groupBy) {
+                groupByFields = query.groupBy.map(groupByObject => groupByObject.ref[0]);
             }
 
-            //Set count of the final response
-            aggregatedResults.$count = results.length;
+            const aggrResults = await SELECT
+                .from(PerPersonal)
+                .columns(query.columns)
+                .groupBy(...groupByFields)
+                .limit(query.limit)
+                .orderBy(query.orderBy);
 
-            return aggregatedResults;
+            await DELETE.from(PerPersonal);
+
+            aggrResults.$count = totalCount;
+
+            return aggrResults;
+
         } catch (err) {
             req.error(err.code, err.message);
+
+            await DELETE.from(PerPersonal);
         }
+
+
     })
 }

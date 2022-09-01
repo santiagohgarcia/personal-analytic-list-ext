@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Aggregation.V1.xml">
+        <edmx:Include Alias="Aggregation" Namespace="Org.OData.Aggregation.V1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Analytics.xml">
+        <edmx:Include Alias="Analytics" Namespace="com.sap.vocabularies.Analytics.v1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Capabilities.V1.xml">
+        <edmx:Include Alias="Capabilities" Namespace="Org.OData.Capabilities.V1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml">
+        <edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml">
+        <edmx:Include Alias="Core" Namespace="Org.OData.Core.V1"/>
+    </edmx:Reference>
+    <edmx:DataServices>
+        <Schema Namespace="PersonalService" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+            <EntityContainer Name="EntityContainer">
+                <EntitySet Name="PerPersonal" EntityType="PersonalService.PerPersonal"/>
+            </EntityContainer>
+            <EntityType Name="PerPersonal">
+                <Key>
+                    <PropertyRef Name="PersonalId"/>
+                </Key>
+                <Property Name="PersonalId" Type="Edm.String" MaxLength="100" Nullable="false"/>
+                <Property Name="FirstName" Type="Edm.String" MaxLength="128"/>
+                <Property Name="LastName" Type="Edm.String" MaxLength="128"/>
+                <Property Name="Initials" Type="Edm.String" MaxLength="128"/>
+                <Property Name="PersonalTitle" Type="Edm.String" MaxLength="128"/>
+                <Property Name="Gender" Type="Edm.String" MaxLength="2"/>
+                <Property Name="MaritalStatus" Type="Edm.String" MaxLength="50"/>
+                <Property Name="Nationality" Type="Edm.String" MaxLength="128"/>
+                <Property Name="NumberOfPersons" Type="Edm.Int32"/>
+            </EntityType>
+            <Annotations Target="PersonalService.PerPersonal">
+                <Annotation Term="Aggregation.ApplySupported">
+                    <Record Type="Aggregation.ApplySupportedType">
+                        <PropertyValue Property="PropertyRestrictions" Bool="true"/>
+                        <PropertyValue Property="Transformations">
+                            <Collection>
+                                <String>aggregate</String>
+                                <String>topcount</String>
+                                <String>bottomcount</String>
+                                <String>identity</String>
+                                <String>concat</String>
+                                <String>groupby</String>
+                                <String>filter</String>
+                                <String>expand</String>
+                                <String>top</String>
+                                <String>skip</String>
+                                <String>orderby</String>
+                                <String>search</String>
+                                <String>sum</String>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="GroupableProperties">
+                            <Collection>
+                                <PropertyPath>PersonalId</PropertyPath>
+                                <PropertyPath>FirstName</PropertyPath>
+                                <PropertyPath>LastName</PropertyPath>
+                                <PropertyPath>Gender</PropertyPath>
+                                <PropertyPath>Initials</PropertyPath>
+                                <PropertyPath>MaritalStatus</PropertyPath>
+                                <PropertyPath>Nationality</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="AggregatableProperties">
+                            <Collection>
+                                <Record Type="Aggregation.AggregatablePropertyType">
+                                    <PropertyValue Property="RecommendedAggregationMethod" String="sum"/>
+                                    <PropertyValue Property="SupportedAggregationMethods">
+                                        <Collection>
+                                            <String>sum</String>
+                                        </Collection>
+                                    </PropertyValue>
+                                    <PropertyValue Property="Property" PropertyPath="NumberOfPersons"/>
+                                    <Annotation Term="Common.Label" String="Number of Persons"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Analytics.AggregatedProperties">
+                    <Collection>
+                        <Record Type="Analytics.AggregatedPropertyType">
+                            <PropertyValue Property="Name" String="NumberOfPersonsMeasure"/>
+                            <PropertyValue Property="AggregationMethod" String="sum"/>
+                            <PropertyValue Property="AggregatableProperty" PropertyPath="NumberOfPersons"/>
+                            <Annotation Term="Common.Label" String="Number of Persons"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="PersonalService.EntityContainer/PerPersonal">
+                <Annotation Term="Aggregation.ApplySupported">
+                    <Record Type="Aggregation.ApplySupportedType">
+                        <PropertyValue Property="PropertyRestrictions" Bool="true"/>
+                        <PropertyValue Property="Transformations">
+                            <Collection>
+                                <String>aggregate</String>
+                                <String>topcount</String>
+                                <String>bottomcount</String>
+                                <String>identity</String>
+                                <String>concat</String>
+                                <String>groupby</String>
+                                <String>filter</String>
+                                <String>expand</String>
+                                <String>top</String>
+                                <String>skip</String>
+                                <String>orderby</String>
+                                <String>search</String>
+                                <String>sum</String>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="GroupableProperties">
+                            <Collection>
+                                <PropertyPath>PersonalId</PropertyPath>
+                                <PropertyPath>FirstName</PropertyPath>
+                                <PropertyPath>LastName</PropertyPath>
+                                <PropertyPath>Gender</PropertyPath>
+                                <PropertyPath>Initials</PropertyPath>
+                                <PropertyPath>MaritalStatus</PropertyPath>
+                                <PropertyPath>Nationality</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="AggregatableProperties">
+                            <Collection>
+                                <Record Type="Aggregation.AggregatablePropertyType">
+                                    <PropertyValue Property="RecommendedAggregationMethod" String="sum"/>
+                                    <PropertyValue Property="SupportedAggregationMethods">
+                                        <Collection>
+                                            <String>sum</String>
+                                        </Collection>
+                                    </PropertyValue>
+                                    <PropertyValue Property="Property" PropertyPath="NumberOfPersons"/>
+                                    <Annotation Term="Common.Label" String="Number of Persons"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.DeleteRestrictions">
+                    <Record Type="Capabilities.DeleteRestrictionsType">
+                        <PropertyValue Property="Deletable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.InsertRestrictions">
+                    <Record Type="Capabilities.InsertRestrictionsType">
+                        <PropertyValue Property="Insertable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.UpdateRestrictions">
+                    <Record Type="Capabilities.UpdateRestrictionsType">
+                        <PropertyValue Property="Updatable" Bool="false"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="PersonalService.PerPersonal/PersonalId">
+                <Annotation Term="Analytics.Dimension" Bool="true"/>
+            </Annotations>
+            <Annotations Target="PersonalService.PerPersonal/FirstName">
+                <Annotation Term="Analytics.Dimension" Bool="true"/>
+            </Annotations>
+            <Annotations Target="PersonalService.PerPersonal/LastName">
+                <Annotation Term="Analytics.Dimension" Bool="true"/>
+            </Annotations>
+            <Annotations Target="PersonalService.PerPersonal/Initials">
+                <Annotation Term="Analytics.Dimension" Bool="true"/>
+            </Annotations>
+            <Annotations Target="PersonalService.PerPersonal/PersonalTitle">
+                <Annotation Term="Analytics.Dimension" Bool="true"/>
+            </Annotations>
+            <Annotations Target="PersonalService.PerPersonal/Gender">
+                <Annotation Term="Analytics.Dimension" Bool="true"/>
+            </Annotations>
+            <Annotations Target="PersonalService.PerPersonal/MaritalStatus">
+                <Annotation Term="Analytics.Dimension" Bool="true"/>
+            </Annotations>
+            <Annotations Target="PersonalService.PerPersonal/Nationality">
+                <Annotation Term="Analytics.Dimension" Bool="true"/>
+            </Annotations>
+            <Annotations Target="PersonalService.PerPersonal/NumberOfPersons">
+                <Annotation Term="Analytics.Measure" Bool="true"/>
+                <Annotation Term="Core.Computed" Bool="true"/>
+            </Annotations>
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>

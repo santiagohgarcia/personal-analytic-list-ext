@@ -8,22 +8,21 @@
   "dependencies": {
     "@sap-cloud-sdk/http-client": "^2.7.1",
     "@sap/cds": "^6",
-    "@sap/cds-odata-v2-adapter-proxy": "^1.8.4",
-    "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "express": "^4",
     "sqlite3": "^5.0.2"
   },
   "devDependencies": {
     "@sap/eslint-plugin-ui5-jsdocs": "^2.0.5",
-    "@sap/ux-specification": "^1.96.19",
+    "@sap/ux-specification": "^1.102.5",
     "@sapui5/ts-types": "^1.92.2",
     "eslint": "^7.32.0",
     "sqlite3": "^5.0.2"
   },
   "scripts": {
     "start": "cds run",
-    "watch": "cds watch"
+    "watch": "cds watch",
+    "watch-personal-analytic-list-ext": "cds watch --open personal-analytic-list-ext/webapp/index.html?sap-ui-xx-viewCache=false"
   },
   "eslintConfig": {
     "extends": "eslint:recommended",
@@ -55,12 +54,12 @@
       "db": {
         "kind": "sqlite",
         "credentials": {
-          "database": ":memory:"
+          "database": "sqlite.db"
         }
       },
       "ECPersonalInformation": {
         "kind": "odata-v2",
-        "model": "db\\external\\ECPersonalInformation",
+        "model": "srv\\external\\ECPersonalInformation",
         "[development]": {
           "credentials": {
             "requestTimeout": 30000,
@@ -75,5 +74,8 @@
         }
       }
     }
-  }
+  },
+  "sapux": [
+    "app/personal-analytic-list-ext"
+  ]
 }
