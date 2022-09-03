@@ -43,10 +43,10 @@
                 }
             },
             applications: {
-                "sfsfextensionspersonalanalyticlistext-tile": {
+                "sfsfextensionspersonalanalyticlistextv2-tile": {
                     title: "Personal Analytic List Ext",
                     description: "Personal Analytic List Ext",
-                    additionalInformation: "SAPUI5.Component=sfsf.extensions.personalanalyticlistext",
+                    additionalInformation: "SAPUI5.Component=sfsf.extensions.personalanalyticlistextv2",
                     applicationType: "URL",
                     url: "../"
                 }
@@ -54,19 +54,22 @@
         };
     </script>
 
-    <script src="https://sapui5.hana.ondemand.com/1.102.1/test-resources/sap/ushell/bootstrap/sandbox.js" id="sap-ushell-bootstrap"></script>
-    <!-- Bootstrap the UI5 core library -->
+    <script src="https://sapui5.hana.ondemand.com/1.96.12/test-resources/sap/ushell/bootstrap/sandbox.js" id="sap-ushell-bootstrap"></script>
+    <!-- Bootstrap the UI5 core library. 'data-sap-ui-frameOptions="allow"'' is a NON-SECURE setting for test environments -->
     <script id="sap-ui-bootstrap"
-        src="https://sapui5.hana.ondemand.com/1.102.1/resources/sap-ui-core.js"
-        data-sap-ui-libs=""
+        src="https://sapui5.hana.ondemand.com/1.96.12/resources/sap-ui-core.js"
+        data-sap-ui-libs="sap.m,sap.ui.core,sap.ushell,sap.f,sap.ui.comp,sap.ui.generic.app,sap.suite.ui.generic.template"
         data-sap-ui-async="true"
         data-sap-ui-preload="async"
-        data-sap-ui-theme="sap_horizon"
+        data-sap-ui-theme="sap_fiori_3_dark"
         data-sap-ui-compatVersion="edge"
         data-sap-ui-language="en"
-        data-sap-ui-resourceroots='{"sfsf.extensions.personalanalyticlistext": "../"}'
-        data-sap-ui-frameOptions="allow"> // NON-SECURE setting for testing environment
-    </script>
+        data-sap-ui-resourceroots='{"sfsf.extensions.personalanalyticlistextv2": "../"}'
+        data-sap-ui-frameOptions="allow"
+        data-sap-ui-flexibilityServices='[{"applyConnector":"sfsf/extensions/personalanalyticlistextv2/test/changes_loader", "custom":true}]'>
+        </script>
+        <script id="locate-reuse-libs" src="../utils/locate-reuse-libs.js" data-sap-ui-manifest-uri="../manifest.json">
+        </script>
 </head>
 
 <!-- UI Content -->

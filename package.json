@@ -8,6 +8,7 @@
   "dependencies": {
     "@sap-cloud-sdk/http-client": "^2.7.1",
     "@sap/cds": "^6",
+    "@sap/cds-odata-v2-adapter-proxy": "^1.9.6",
     "dotenv": "^10.0.0",
     "express": "^4",
     "sqlite3": "^5.0.2"
@@ -21,8 +22,7 @@
   },
   "scripts": {
     "start": "cds run",
-    "watch": "cds watch",
-    "watch-personal-analytic-list-ext": "cds watch --open personal-analytic-list-ext/webapp/index.html?sap-ui-xx-viewCache=false"
+    "watch": "cds watch"
   },
   "eslintConfig": {
     "extends": "eslint:recommended",
@@ -62,7 +62,7 @@
         "model": "srv\\external\\ECPersonalInformation",
         "[development]": {
           "credentials": {
-            "requestTimeout": 30000,
+            "requestTimeout": 999999,
             "url": "https://sandbox.api.sap.com/successfactors/odata/v2",
             "authentication": "NoAuthentication"
           }
@@ -76,6 +76,6 @@
     }
   },
   "sapux": [
-    "app/personal-analytic-list-ext"
+    "app/personal-analytic-list-ext-v2"
   ]
 }

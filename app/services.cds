@@ -1,2 +1,2 @@
 
-using from './personal-analytic-list-ext/annotations';
+using from './personal-analytic-list-ext-v2/annotations';
