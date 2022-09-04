@@ -37,14 +37,26 @@ service PersonalService {
 
             @Analytics.Dimension
             maritalStatus as MaritalStatus,
+            
+            @Analytics.Dimension
+            '' as MaritalStatusDescr : String,
 
             @Analytics.Dimension
             nationality as Nationality, 
+
+            @Analytics.Dimension
+            '' as DateOfBirth: Date,
+
+            @Analytics.Dimension
+            @Core.Computed
+            '' as YearOfBirth : Integer,
             
             @Analytics.Measure
             @Core.Computed
             @Aggregation.default : #SUM
             1 as NumberOfPersons : Integer @Common.Label : 'Number of Persons'
     }
+
+
 
 }

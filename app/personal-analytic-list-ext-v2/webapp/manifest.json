@@ -120,7 +120,7 @@
                     "settings": {
                         "condensedTableLayout": true,
                         "showGoButtonOnFilterBar": true,
-                        "tableType": "ResponsiveTable",
+                        "tableType": "AnalyticalTable",
                         "autoHide": true,
                         "smartVariantManagement": true,
                         "tableSettings": {
@@ -128,16 +128,8 @@
                         },
                         "keyPerformanceIndicators": {}
                     }
-                },
-                "pages": {
-                    "ObjectPage|PerPersonal": {
-                        "entitySet": "PerPersonal",
-                        "defaultLayoutTypeIfExternalNavigation": "MidColumnFullScreen",
-                        "component": {
-                            "name": "sap.suite.ui.generic.template.ObjectPage"
-                        }
-                    }
                 }
+
             }
         }
     },

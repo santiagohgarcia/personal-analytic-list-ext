@@ -53,6 +53,7 @@
                         <PropertyPath>Gender</PropertyPath>
                         <PropertyPath>MaritalStatus</PropertyPath>
                         <PropertyPath>Nationality</PropertyPath>
+                        <PropertyPath>YearOfBirth</PropertyPath>
                     </Collection>
                 </Annotation>
                 <!-- CHART: Number of Persons by Gender -->
@@ -85,8 +86,38 @@
                         </PropertyValue>
                     </Record>
                 </Annotation>
-                 <!-- CHART: Number of Persons by Nationality -->
-                 <Annotation Term="UI.Chart" Qualifier="CHART_NUMBER_OF_PERS_BY_NATIONALITY">
+                <!-- CHART: Number of Persons by Nationality -->
+                <Annotation Term="UI.Chart" Qualifier="CHART_NUMBER_OF_PERS_BY_YEAR_OF_BIRTH">
+                    <Record Type="UI.ChartDefinitionType">
+                        <PropertyValue Property="ChartType" EnumMember="UI.ChartType/Line" />
+                        <PropertyValue Property="Dimensions">
+                            <Collection>
+                                <PropertyPath>YearOfBirth</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="DimensionAttributes">
+                            <Collection>
+                                <Record Type="UI.ChartDimensionAttributeType">
+                                    <PropertyValue Property="Dimension" PropertyPath="YearOfBirth" />
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="Measures">
+                            <Collection>
+                                <PropertyPath>NumberOfPersons</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="MeasureAttributes">
+                            <Collection>
+                                <Record Type="UI.ChartMeasureAttributeType">
+                                    <PropertyValue Property="Measure" PropertyPath="NumberOfPersons" />
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <!-- CHART: Number of Persons by Nationality -->
+                <Annotation Term="UI.Chart" Qualifier="CHART_NUMBER_OF_PERS_BY_NATIONALITY">
                     <Record Type="UI.ChartDefinitionType">
                         <PropertyValue Property="ChartType" EnumMember="UI.ChartType/Column" />
                         <PropertyValue Property="Dimensions">
@@ -125,6 +156,21 @@
                         </PropertyValue>
                     </Record>
                 </Annotation>
+                <!-- PRESENTATION VARIANT: Number of Persons by Year of Birth -->
+                <Annotation Term="UI.PresentationVariant" Qualifier="PERSONS_BY_YEAR_OF_BIRTH_PV">
+                    <Record Type="UI.PresentationVariantType">
+                        <PropertyValue Property="SelectionFields">
+                            <Collection>
+                                <PropertyPath>YearOfBirth</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="Visualizations">
+                            <Collection>
+                                <AnnotationPath>@UI.Chart#CHART_NUMBER_OF_PERS_BY_YEAR_OF_BIRTH</AnnotationPath>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
                 <!-- PRESENTATION VARIANT: Number of Persons by Gender -->
                 <Annotation Term="UI.PresentationVariant" Qualifier="PERSONS_BY_GENDER_PV">
                     <Record Type="UI.PresentationVariantType">
@@ -159,7 +205,7 @@
                 </Annotation>
                 <Annotation Term="Common.ValueList">
                     <Record Type="Common.ValueListType">
-                        <PropertyValue Property="SearchSupported" Bool="false"/>
+                        <PropertyValue Property="SearchSupported" Bool="false" />
                         <PropertyValue Property="CollectionPath" String="PerPersonal" />
                         <PropertyValue Property="Parameters">
                             <Collection>
@@ -169,13 +215,14 @@
                                 </Record>
                             </Collection>
                         </PropertyValue>
+                        <PropertyValue Property="SelectionVariantQualifier" String="" />
                     </Record>
                 </Annotation>
                 <Annotation Term="Common.ValueList" Qualifier="GENDER_VISUAL_FILTER_VL">
                     <Record Type="Common.ValueListType">
-                        <PropertyValue Property="SearchSupported" Bool="false"/>
+                        <PropertyValue Property="SearchSupported" Bool="false" />
                         <PropertyValue Property="CollectionPath" String="PerPersonal" />
-                        <PropertyValue Property="Label" String="Number of Persons by Gender"/>
+                        <PropertyValue Property="Label" String="Number of Persons by Gender" />
                         <PropertyValue Property="Parameters">
                             <Collection>
                                 <Record Type="Common.ValueListParameterInOut">
@@ -197,7 +244,7 @@
             <Annotations Target="PersonalService.PerPersonal/Nationality">
                 <Annotation Term="Common.ValueList">
                     <Record Type="Common.ValueListType">
-                        <PropertyValue Property="SearchSupported" Bool="false"/>
+                        <PropertyValue Property="SearchSupported" Bool="false" />
                         <PropertyValue Property="CollectionPath" String="PerPersonal" />
                         <PropertyValue Property="Parameters">
                             <Collection>
@@ -206,7 +253,7 @@
                                     <PropertyValue Property="ValueListProperty" String="Nationality" />
                                 </Record>
                                 <Record Type="Common.ValueListParameterFilterOnly">
-                                    <PropertyValue Property="ValueListProperty" String="Nationality"/>
+                                    <PropertyValue Property="ValueListProperty" String="Nationality" />
                                 </Record>
                             </Collection>
                         </PropertyValue>
@@ -214,9 +261,9 @@
                 </Annotation>
                 <Annotation Term="Common.ValueList" Qualifier="NATIONALIY_VISUAL_FILTER_VL">
                     <Record Type="Common.ValueListType">
-                        <PropertyValue Property="SearchSupported" Bool="false"/>
+                        <PropertyValue Property="SearchSupported" Bool="false" />
                         <PropertyValue Property="CollectionPath" String="PerPersonal" />
-                        <PropertyValue Property="Label" String="Number of Persons by Nationality"/>
+                        <PropertyValue Property="Label" String="Number of Persons by Nationality" />
                         <PropertyValue Property="Parameters">
                             <Collection>
                                 <Record Type="Common.ValueListParameterInOut">
@@ -226,12 +273,53 @@
                             </Collection>
                         </PropertyValue>
                         <PropertyValue Property="PresentationVariantQualifier" String="PERSONS_BY_NATIONALITY_PV" />
+
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <!-- Year of Birth -->
+            <Annotations Target="PersonalService.PerPersonal/YearOfBirth">
+                <Annotation Term="Common.ValueList">
+                    <Record Type="Common.ValueListType">
+                        <PropertyValue Property="SearchSupported" Bool="false" />
+                        <PropertyValue Property="CollectionPath" String="PerPersonal" />
+                        <PropertyValue Property="Parameters">
+                            <Collection>
+                                <Record Type="Common.ValueListParameterInOut">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="YearOfBirth" />
+                                    <PropertyValue Property="ValueListProperty" String="YearOfBirth" />
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="SelectionVariantQualifier" String="PERSONS_BY_YEAR_OF_BIRTH_SEARCH_SV" />
+                    </Record>
+                </Annotation>
+                <Annotation Term="Common.ValueList" Qualifier="YEAR_OF_BIRTH_VISUAL_FILTER_VL">
+                    <Record Type="Common.ValueListType">
+                        <PropertyValue Property="SearchSupported" Bool="false" />
+                        <PropertyValue Property="CollectionPath" String="PerPersonal" />
+                        <PropertyValue Property="Label" String="Number of Persons by Year Of Birth" />
+                        <PropertyValue Property="Parameters">
+                            <Collection>
+                                <Record Type="Common.ValueListParameterInOut">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="YearOfBirth" />
+                                    <PropertyValue Property="ValueListProperty" String="YearOfBirth" />
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="PresentationVariantQualifier" String="PERSONS_BY_YEAR_OF_BIRTH_PV" />
                     </Record>
                 </Annotation>
             </Annotations>
             <!-- NumberOfPersons -->
             <Annotations Target="PersonalService.PerPersonal/NumberOfPersons">
-                <Annotation Term="UI.HiddenFilter"/>
+                <Annotation Term="UI.HiddenFilter" />
+            </Annotations>
+            <!-- MaritalStatus -->
+            <Annotations Target="PersonalService.PerPersonal/MaritalStatus">
+                <Annotation Term="Common.Text" Path="MaritalStatusDescr">
+                    <Annotation Term="UI.TextArrangement" EnumMember="UI.TextArrangementType/TextOnly"/>
+                </Annotation>
             </Annotations>
         </Schema>
     </edmx:DataServices>

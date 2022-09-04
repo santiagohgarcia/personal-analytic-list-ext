@@ -30,6 +30,7 @@ async function getAggregatedResults(entity, query, externalResults) {
         .from(entity)
         .columns(query.columns)
         .groupBy(...groupByFields)
+        .where(query.where || [])
         .limit(query.limit)
         .orderBy(query.orderBy);
 

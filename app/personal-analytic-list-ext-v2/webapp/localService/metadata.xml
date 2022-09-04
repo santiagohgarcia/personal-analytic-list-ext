@@ -38,6 +38,8 @@
                 <Property Name="GenderDescr" Type="Edm.String" sap:aggregation-role="dimension"/>
                 <Property Name="MaritalStatus" Type="Edm.String" MaxLength="50" sap:required="false" sap:creatable="false" sap:updatable="false" sap:upsertable="true" sap:visible="true" sap:sortable="true" sap:filterable="true" sap:picklist="ecMaritalStatus" sap:label="Marital Status" sap:aggregation-role="dimension"/>
                 <Property Name="Nationality" Type="Edm.String" MaxLength="128" sap:required="true" sap:creatable="false" sap:updatable="false" sap:upsertable="true" sap:visible="true" sap:sortable="true" sap:filterable="true" sap:label="Nationality" sap:aggregation-role="dimension"/>
+                <Property Name="DateOfBirth" Type="Edm.DateTime" sap:aggregation-role="dimension" sap:display-format="Date"/>
+                <Property Name="YearOfBirth" Type="Edm.Int32" sap:aggregation-role="dimension"/>
                 <Property Name="NumberOfPersons" Type="Edm.Int32" sap:aggregation-role="measure" sap:label="Number of Persons"/>
             </EntityType>
             <Annotations Target="PersonalService.PerPersonal" xmlns="http://docs.oasis-open.org/odata/ns/edm">
@@ -102,6 +104,14 @@
             </Annotations>
             <Annotations Target="PersonalService.PerPersonal/Nationality" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="Analytics.Dimension" Bool="true"/>
+            </Annotations>
+            <Annotations Target="PersonalService.PerPersonal/DateOfBirth" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Analytics.Dimension" Bool="true"/>
+                <Annotation Term="Core.Computed" Bool="true"/>
+            </Annotations>
+            <Annotations Target="PersonalService.PerPersonal/YearOfBirth" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Analytics.Dimension" Bool="true"/>
+                <Annotation Term="Core.Computed" Bool="true"/>
             </Annotations>
             <Annotations Target="PersonalService.PerPersonal/NumberOfPersons" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="Analytics.Measure" Bool="true"/>

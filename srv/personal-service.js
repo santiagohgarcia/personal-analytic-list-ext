@@ -21,30 +21,68 @@ module.exports = async (srv) => {
         const tx = ECPersonalInformation.tx(req);
         const requestQuery = req.query.SELECT;
 
-        //Prepare OData V2 Query 
+        //Prepare OData V2 Query   
         const v2Query = SELECT
-            .from(requestQuery.from)
-            .where(requestQuery.where || []);
+            .columns((personal) => {
+                personal.personIdExternal,
+                    personal.firstName,
+                    personal.lastName,
+                    personal.initials,
+                    personal.displayName,
+                    personal.title,
+                    personal.gender,
+                    personal.maritalStatus,
+                    personal.nationality,
+                    personal.personNav((person) => {
+                        person.dateOfBirth
+                    }),
+                    personal.maritalStatusNav((maritalStatus) => {
+                        maritalStatus.picklistLabels((picklist) => {
+                            picklist.locale,
+                            picklist.label
+                        })
+                    })
+            })
+            .from("ECPersonalInformation.PerPersonal")
+        //.where(requestQuery.where || []);
 
         //Get Total Count of the OData V2 Records
         const totalCount = await getTotalCount(tx, v2Query);
 
         //Get entire external result set
-        const externalResults = await tx.run(v2Query);
+        let externalResults = await tx.run(v2Query);
 
         //Transformation
-        externalResults.forEach(item => {
-            
-            item.GenderDescr = {
+        externalResults = externalResults.map(personal => {
+            const dateOfBirth = personal.personNav.dateOfBirth;
+            const yearOfBirth = dateOfBirth && Number(dateOfBirth.substring(0, 4));
+            const genderDescr = {
                 "M": "Masculine",
                 "F": "Femenine"
-            }[item.Gender] || ""
-
-            item.NumberOfPersons = 1
+            }[personal.gender] || "";
+            const maritalStatusTexts = personal.maritalStatusNav && personal.maritalStatusNav.picklistLabels;
+            const maritalStatusText = maritalStatusTexts && maritalStatusTexts.find(maritalStatusText => maritalStatusText.locale === 'en_US');
+            const maritalStatusDescr = maritalStatusText && maritalStatusText.label;
+            return {
+                PersonalId: personal.personIdExternal,
+                FirstName: personal.firstName,
+                LastName: personal.lastName,
+                Initials: personal.initials,
+                DisplayName: personal.displayName,
+                PersonalTitle: personal.title,
+                Gender: personal.gender,
+                GenderDescr: genderDescr,
+                MaritalStatus: personal.maritalStatus,
+                MaritalStatusDescr: maritalStatusDescr,
+                Nationality: personal.nationality,
+                DateOfBirth: dateOfBirth,
+                YearOfBirth: yearOfBirth,
+                NumberOfPersons: 1
+            }
         });
 
         //Aggregate data according to request query parameters
-        const aggrResults = getAggregatedResults(PerPersonal, requestQuery, externalResults);
+        const aggrResults = await getAggregatedResults(PerPersonal, requestQuery, externalResults);
 
         //Assign count to response
         aggrResults.$count = totalCount;
